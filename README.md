@@ -10,7 +10,10 @@ Notification Example:
   "fileVersion": "2022-02-08T08:51:45.9211020Z",
   "applicationName": "calculerenvoorbouw",
   "dataUrl": "https://dataservice.ibis.nl/public/applications/calculerenvoorbouw/files/1e45-65gt-5656?version=2022-02-08T08:51:45.9211020Z", 
-  "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpX..."
+  "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpX...",
+  "customProperties": {
+	"key": "value"
+  }
 }
 ```
 

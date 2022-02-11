@@ -30,46 +30,11 @@ namespace TestErpApp.Controllers
 
     public class NotificationModel
     {
-        public string CompanyId
-        {
-            get;
-            set;
-        }
-
-        public string FileId
-        {
-            get;
-            set;
-        }
-
-        public string FileVersion
-        {
-            get;
-            set;
-        }
-
-        public string ApplicationName
-        {
-            get;
-            set;
-        }
-
-        public string DataUrl
-        {
-            get;
-            set;
-        }
-
-        public string EntityStatus
-        {
-            get;
-            set;
-        }
-
-        public string Token
-        {
-            get;
-            set;
-        }
+        public Guid? FileId { get; set; }
+        public string? FileVersion { get; set; }
+        public string? ApplicationName { get; set; }
+        public Uri? DataUrl { get; set; }
+        public string? Token { get; set; }
+        public Dictionary<string, string>? customProperties { get; set; }
     }
 }
