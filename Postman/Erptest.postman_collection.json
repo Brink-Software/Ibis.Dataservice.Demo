@@ -1,0 +1,101 @@
+{
+	"info": {
+		"_postman_id": "808257a3-e1c5-4db5-ade4-3ab187c47053",
+		"name": "Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Trigger notification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "<insert here your API key>",
+						"description": "The API key",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"url\": \"https://www.google.nl/\",\r\n    \"customProperties\": {\r\n        \"jobId\": \"1234\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dataservice.ibis.nl/public/notification",
+					"protocol": "https",
+					"host": [
+						"dataservice",
+						"ibis",
+						"nl"
+					],
+					"path": [
+						"public",
+						"notification"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Test File",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "<insert here your API key>",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer <insert here your bearer token>",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://dataservice.ibis.nl/public/applications/demoerp/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3",
+					"protocol": "https",
+					"host": [
+						"dataservice",
+						"ibis",
+						"nl"
+					],
+					"path": [
+						"public",
+						"applications",
+						"demoerp",
+						"files",
+						"8dd5a784-cd09-4068-8c7c-efdeabe95ac3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notification Example (see body)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		}
+	]
+}
