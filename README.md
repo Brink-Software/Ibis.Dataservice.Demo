@@ -22,9 +22,9 @@ The app sends a HTTP request to the url specified by “dataUrl” with the foll
 
 ![image](https://user-images.githubusercontent.com/30176581/153437030-6b6f2a9a-f437-4db0-965d-f39f568188d3.png)
 
-* Accept: Optional. ERP API supports “application/json” en “application/xml”
-* Authorization: A bearer token with the value specified in the "token" field in the notification.
-* Ocp-Apim-Subscription-Key: De API key needed to access the ERP API. This key is provided by Brink.
+- *Accept*: Optional. ERP API supports “application/json” en “application/xml”
+- *Authorization*: A bearer token with the value specified in the "token" field in the notification.
+- *Ocp-Apim-Subscription-Key*: De API key needed to access the ERP API. This key is provided by Brink.
 
 ## Postman collection
 In this repository is included a postman collection to test the Brink ERP API as well as the demo web app. This collection contains 2 requests:
