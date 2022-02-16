@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"url\": \"https://www.google.nl/\",\r\n    \"customProperties\": {\r\n        \"jobId\": \"1234\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"url\": \"<insert here the endpoint where you want your notifications to be sent to>",\r\n    \"customProperties\": {\r\n        \"jobId\": \"1234\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
