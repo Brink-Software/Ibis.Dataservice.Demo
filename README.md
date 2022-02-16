@@ -1,4 +1,5 @@
 # demo-erp-app
+## Introduction
 Test application to interact with Brink ERP Integration system.
 
 This app simulates an ERP system with an endpoint to receive notifications. When the app receives a notifications, it is displayed with a button that allows the user to send a request to the Brink ERP Integration API.
@@ -22,11 +23,19 @@ The app sends a HTTP request to the url specified by “dataUrl” with the foll
 
 ![image](https://user-images.githubusercontent.com/30176581/153437030-6b6f2a9a-f437-4db0-965d-f39f568188d3.png)
 
-- *Accept*: Optional. ERP API supports “application/json” en “application/xml”
+- *Accept*: Optional. ERP API supports “application/json” en “application/xml”.
 - *Authorization*: A bearer token with the value specified in the "token" field in the notification.
 - *Ocp-Apim-Subscription-Key*: De API key needed to access the ERP API. This key is provided by Brink.
 
-## Postman collection
+## How to use
+1. Get your subscription API key and paste it in the box "API key".
+2. Trigger your notification (see below Postman collection) to be sent to the "notifications" endpoint from your web app. Example: https://<mywebappdomain>/notifications.
+3. Notifications will appear as Json text under "Notificaties".
+4. Press the "Bestanden Ophalen" button which appears under the notification object.
+5. See the retrieved file under the column "Bestand".
+6. If desired, the file can be requested as Json if the checkbox "Haal bestand op als JSON" is checked.
+
+# Postman collection
 In this repository is included a postman collection to test the Brink ERP API as well as the demo web app. This collection contains 2 requests:
 
 * **Trigger Notification**: POST request to an API endpoint that generates and sends a test notification to an endpoint specified in the body of the request. 
