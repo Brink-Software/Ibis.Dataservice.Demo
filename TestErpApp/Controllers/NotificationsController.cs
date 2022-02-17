@@ -19,6 +19,14 @@ namespace TestErpApp.Controllers
             return store.Get();
         }
 
+        [HttpDelete]
+        public ActionResult Delete()
+        {
+            var store = _services.GetService<NotificationStore>();
+            store.Clear();
+            return new OkResult();
+        }
+
         [HttpPost]
         public ActionResult Notify([FromBody]NotificationModel content)
         {

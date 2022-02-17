@@ -28,11 +28,12 @@ export class HomeComponent {
   public saveKey() {
     this.http.post(this.baseUrl + 'key', { key: this.key }).subscribe(() => { });
   }
-
   public notificationIdentifier(_index: number, item: NotificationModel) {
     return item.dataUrl;
   }
-
+  public clearNotifications() {
+    this.http.delete(this.baseUrl + 'notifications').subscribe(() => { });
+  }
   private IsJson(value: string) : boolean{
     try {
       JSON.parse(value);
