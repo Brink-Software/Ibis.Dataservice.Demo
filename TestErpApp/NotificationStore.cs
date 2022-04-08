@@ -10,6 +10,11 @@ namespace TestErpApp
             _notifications.Add(notification);
         }
 
+        public void Clear()
+        {
+            _notifications.Clear();
+        }
+
         public IEnumerable<NotificationModel> Get()
         {
             return _notifications;
