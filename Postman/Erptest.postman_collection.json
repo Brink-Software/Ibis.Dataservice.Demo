@@ -1,8 +1,10 @@
 {
 	"info": {
-		"_postman_id": "808257a3-e1c5-4db5-ade4-3ab187c47053",
+		"_postman_id": "95dac68c-60a5-48b6-8619-6ffcdb298c6c",
 		"name": "Test",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "18396766",
+		"_collection_link": "https://universal-station-197728.postman.co/workspace/Erp-Test~a773e827-82e1-47a9-9bc5-4e45c38b47cf/collection/18396766-95dac68c-60a5-48b6-8619-6ffcdb298c6c?action=share&creator=18396766&source=collection_link"
 	},
 	"item": [
 		{
@@ -19,26 +21,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"url\": \"<insert here the endpoint where you want your notifications to be sent to>",\r\n    \"customProperties\": {\r\n        \"jobId\": \"1234\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"url\": \"<insert here the endpoint where you want your notifications to be sent to>\",\r\n    \"customProperties\": {\r\n        \"jobId\": \"1234\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": {
-					"raw": "https://dataservice.ibis.nl/public/notification",
-					"protocol": "https",
-					"host": [
-						"dataservice",
-						"ibis",
-						"nl"
-					],
-					"path": [
-						"public",
-						"notification"
-					]
-				}
+				"url": "https://dataservice.ibis.nl/public/notification"
 			},
 			"response": []
 		},
@@ -67,10 +57,15 @@
 						"key": "Authorization",
 						"value": "bearer <insert here your bearer token>",
 						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "https://dataservice.ibis.nl/public/applications/demoerp/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3",
+					"raw": "https://dataservice.ibis.nl/public/applications/demoerp/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z",
 					"protocol": "https",
 					"host": [
 						"dataservice",
@@ -83,6 +78,12 @@
 						"demoerp",
 						"files",
 						"8dd5a784-cd09-4068-8c7c-efdeabe95ac3"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "2022-02-16T11:12:56.3052287Z"
+						}
 					]
 				}
 			},
@@ -93,7 +94,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": ""
 			},
 			"response": []
 		}
