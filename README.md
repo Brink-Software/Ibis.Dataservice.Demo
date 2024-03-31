@@ -1,10 +1,27 @@
-# demo-erp-app
-## Introduction
-Test application to interact with Brink ERP Integration system.
+# Ibis ERP Integration
 
-This app simulates an ERP system with an endpoint to receive notifications. When the app receives a notifications, it is displayed with a button that allows the user to send a request to the Brink ERP Integration API.
+Brink Software has developed an API to integrate the calculation software with ERP systems. When a TradXML datafile is targeted for export to an ERP system, the calculation software sends a notification to the ERP system using a webhook. The notification contains a URL to the datafile and a token to access the file. The ERP system can then request the file from the calculation software using the URL and token.
 
-Notification Example:
+## Process overview
+
+The customer configures one or more ERP integrations in the Mijn Ibis environment. An ERP integration consists of a name and a url that is used to post the notification to, and optionally some data used to authenticate against the ERP system webhook url.
+
+The customer can then export a file to the Ibis ERP Service using the Ibis calculation software. The Ibis ERP Service then sends a notification to the ERP system with a URL to the file and a token to access the file. The ERP system can then request the file from the calculation software using the URL and token. The ERP system processes the file and does whatever it needs to do with it.
+
+```mermaid
+sequenceDiagram
+  Ibis Software->>Ibis ERP Service (Cloud): Submit file to ERP
+  Ibis ERP Service (Cloud)->>Ibis ERP Service (Cloud): Store file
+  Ibis ERP Service (Cloud)->>ERP System:Send 'file ready to fetch' notification
+  ERP System->>Ibis ERP Service (Cloud): Request file from notification
+  Ibis ERP Service (Cloud)->>ERP System: 
+  ERP System->>ERP System: Process file
+```
+
+When the user submits the file and the ERP system needs additional data, the user is presented with a form to fill in the data. This data is included in the notification sent to the ERP system using the `customProperties` object.
+
+## Notification example
+
 ```json
 { 
   "fileId": "74dedef3-6f2b-4a3...",
@@ -13,58 +30,53 @@ Notification Example:
   "dataUrl": "https://dataservice.ibis.nl/public/applications/calculerenvoorbouw/files/1e45-65gt-5656?version=2022-02-08T08:51:45.9211020Z", 
   "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpX...",
   "customProperties": {
-	"key": "value"
+    "projectId": "12345",
+    "projectName": "Project X"
   }
 }
 ```
 
-The most important fields are "dataUrl" and "token".
-The app sends a HTTP request to the url specified by “dataUrl” with the following HTTPHeaders:
+The same file, identified by the `fileId` can be exported multiple times. Versions are timestamped using the field `fileVersion`. The `dataUrl` is the URL to the file and the `token` is the token to access the file. The `customProperties` object contains additional mandatory or optional data that the ERP system needs to process the file.
 
-![image](https://user-images.githubusercontent.com/30176581/153437030-6b6f2a9a-f437-4db0-965d-f39f568188d3.png)
+### TradXML
 
-- *Accept*: Optional. ERP API supports “application/json” en “application/xml”.
-- *Authorization*: A bearer token with the value specified in the "token" field in the notification.
-- *Ocp-Apim-Subscription-Key*: De API key needed to access the ERP API. This key is provided by Brink.
+The file linked to in a notification is an XML file containing metadata and a TradXML document. An example file can be found [here](Files/demo.xml?raw=1) and a description of TradXML can be found [here](Files/TradXML1-3.pdf?raw=1). 
 
-## How to use
-1. Get your subscription API key and paste it in the box "API key".
-2. Trigger your notification (see below Postman collection) to be sent to the "notifications" endpoint from your web app. Example: https://<mywebappdomain>/notifications.
-3. Notifications will appear as Json text under "Notificaties".
+## Test the integration
+
+We have created a sample webapplication that acts as an ERP system to demonstrate the integration. The application is located [here](https://web-erpdemo-prod.azurewebsites.net/). The application has a simple interface to receive notifications and fetch files.
+
+> [!IMPORTANT]  
+> The following steps need an Api Key to make calls to the Ibis ERP Service. Contact Brink Software to get an Api Key.
+
+1. To get started, get your subscription API key and paste it in the box "API key".
+2. To trigger a notification use the following powershell command that creates a POST request to the Ibis ERP service. It needs the Api Key to authenticate the request using the `Ocp-Apim-Subscription-Key` header.
+
+```powershell
+$ibisErpServiceUri = 'https://dataservice.ibis.nl/public/notification'
+$erpAppWebhookUri = 'https://web-erpdemo-prod.azurewebsites.net/notifications'
+$headers = @{
+    'Ocp-Apim-Subscription-Key' = '<Api Key goes here>'
+}
+
+Invoke-RestMethod -Uri $ibisErpServiceUri  -Body "{`"url`": `"${erpAppWebhookUri}`", `"customProperties`": { `"key`" : `"value`" }}" -ContentType "application/json" -Method Post -Headers $headers
+```
+
+3. The webapplication will receive the notification and display it in the interface.
 4. Press the "Bestanden Ophalen" button which appears under the notification object.
 5. See the retrieved file under the column "Bestand".
 6. If desired, the file can be requested as Json if the checkbox "Haal bestand op als JSON" is checked.
 
-# Postman collection
-In this repository is included a postman collection to test the Brink ERP API as well as the demo web app. This collection contains 2 requests:
+### Request the file
 
-* **Trigger Notification**: POST request to an API endpoint that generates and sends a test notification to an endpoint specified in the body of the request. 
-	- Needed Headers: 
-		- *Ocp-Apim-Subscription-Key*: De API key needed to access the ERP API. This key is provided by Brink.
-	- Body: The body must contain a JSON Object with the following properties:
-		- url: The endpoint the notifications will be sent to. For example, it can be the endpoint published by this demo web app.
-		- customProperties: A JSON Object containing extra information to include in the notification. This object will be basically copied to the generated notification.
+To request the file from the Ibis Erp Service you can use the powershell command below. Take the value of `dataUrl` from the notification as url and use the `token` value as bearer token in the `Authorization` header. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Erp Service. :
 
-Example of the POST body:
-```json
-{
-    "url": "https:/mydemowebsite.net/notifications",
-    "customProperties": {
-        "jobId": "1234"
-    }
+```powershell
+$dataUrl = 'https://dataservice.ibis.nl/public/applications/demoerp/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z'
+$headers = @{
+    'Ocp-Apim-Subscription-Key' = '<Api Key goes here>'
+    'Authorization' = 'bearer <Token goes here>'
 }
+
+Invoke-RestMethod -Uri $dataUrl  -ContentType "application/json" -Method Get -Headers $headers -OutFile file.xml
 ```
-
-* **Get Test File**: GET request to obtain a file. The url in this request matches the url of the generated test notification.
-	- Needed headers: 
-		- *Authorization*: A bearer token with the value specified in the "token" field in the notification. Provided by the generated test notification or directly by Brink.
-		- *Ocp-Apim-Subscription-Key*: De API key needed to access the ERP API. This key is provided by Brink.
-		- *Accept*: Optional. ERP API supports “application/json” en “application/xml”
-
-
-
-
-
-
-
- 
