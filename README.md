@@ -20,6 +20,10 @@ sequenceDiagram
 
 When the user submits the file and the ERP system needs additional data, the user is presented with a form to fill in the data. This data is included in the notification sent to the ERP system using the `customProperties` object.
 
+## Authentication
+
+The Ibis ERP Service supports OAuth authentication against the web hook url provided by the ERP system.
+
 ## Notification example
 
 ```json
