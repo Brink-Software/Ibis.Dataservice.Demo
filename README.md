@@ -53,6 +53,9 @@ We have created a sample webapplication that acts as an ERP system to demonstrat
 > [!IMPORTANT]  
 > The following steps need an Api Key to make calls to the Ibis ERP Service. Contact Brink Software to get an Api Key.
 
+> [!WARNING]  
+> The Api Key is subject to change. In case of misuse or leaked Api Keys Brink Software will change to Api Key so make sure it is configurable. The Api Key is a secret shared between Brink Software and the 3rd party providing the ERP Service. Shared customers should not have access to this Api Key. 
+
 1. To get started, get your subscription API key and paste it in the box "API key".
 2. To trigger a notification use the following powershell command that creates a POST request to the Ibis ERP service. It needs the Api Key to authenticate the request using the `Ocp-Apim-Subscription-Key` header.
 
