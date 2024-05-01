@@ -24,6 +24,8 @@ When the user submits the file and the ERP system needs additional data, the use
 
 The Ibis ERP Service supports OAuth authentication against the web hook url provided by the ERP system.
 
+When the ERP System requests the file from the notification it needs to send a Brink Software provided Api Key to authenticate against the Ibis ERP Service.
+
 ## Notification example
 
 ```json
