@@ -53,7 +53,7 @@ The file linked to in a notification is an XML file containing metadata and a Tr
 We have created a sample webapplication that acts as an ERP system to demonstrate the integration. The application is located [here](https://web-erpdemo-prod.azurewebsites.net/). The application has a simple interface to receive notifications and fetch files.
 
 > [!IMPORTANT]  
-> The following steps need an Api Key to make calls to the Ibis ERP Service. Contact Brink Software to get an Api Key.
+> The following steps need an Api Key to make calls to the Ibis ERP Service. Contact Brink Software to get an Api Key. There is one Api Key per integrator, not per customer.
 
 > [!WARNING]  
 > The Api Key is subject to change. In case of misuse or leaked Api Keys Brink Software will change to Api Key so make sure it is configurable. The Api Key is a secret shared between Brink Software and the 3rd party providing the ERP Service. Shared customers should not have access to this Api Key. 
