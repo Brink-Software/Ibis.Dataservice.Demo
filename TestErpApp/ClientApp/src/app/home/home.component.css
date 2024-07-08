@@ -4,7 +4,6 @@
   justify-content: center;
 }
 
-
 .keybox {
   display: flex;
   margin-top: 35px;
@@ -12,28 +11,25 @@
 }
 
 .keybox label {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
-.jsonbox{
-    margin-bottom: 20px;    
+.jsonbox {
+  margin-bottom: 20px;
 }
 
 .jsonbox input {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
-pre{
-    max-width: 500px;
+pre {
+  max-width: 500px;
 }
 
-.notifications{
-    flex: 1 1 0
+.notifications {
+  flex: 1 1 0;
 }
 
-.files{
-    flex:  1 1 0    
+.files {
+  flex: 1 1 0;
 }
-
-
-
