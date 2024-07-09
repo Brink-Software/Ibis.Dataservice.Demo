@@ -1,4 +1,4 @@
-# Editor configuration, see http://editorconfig.org
+# Editor configuration, see https://editorconfig.org
 root = true
 
 [*]
@@ -15,5 +15,3 @@ quote_type = single
 max_line_length = off
 trim_trailing_whitespace = false
 
-[*.{razor,cshtml}]
-charset = utf-8-bom
