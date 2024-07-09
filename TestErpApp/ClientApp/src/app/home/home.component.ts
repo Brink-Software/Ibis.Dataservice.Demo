@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
@@ -14,16 +14,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
+  private http = inject(HttpClient);
+  private baseUrl = inject<string>('BASE_URL' as any);
   public notifications: any;
   public file: any;
   public askJson: boolean = false;
   public isJson: boolean = false;
   public key: string = '';
 
-  constructor(
-    private http: HttpClient,
-    @Inject('BASE_URL') private baseUrl: string,
-  ) {
+  constructor() {
     interval(2000)
       .pipe(
         switchMap(() =>
@@ -88,4 +87,3 @@ interface NotificationModel {
 interface KeyModel {
   key: string;
 }
-
