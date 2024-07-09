@@ -4,13 +4,9 @@ namespace TestErpApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class KeyController : ControllerBase
+    public class KeyController(IServiceProvider services) : ControllerBase
     {
-        private readonly IServiceProvider _services;
-        public KeyController(IServiceProvider services)
-        {
-            _services = services;
-        }
+        private readonly IServiceProvider _services = services;
 
         [HttpGet]
         public KeyModel Get()

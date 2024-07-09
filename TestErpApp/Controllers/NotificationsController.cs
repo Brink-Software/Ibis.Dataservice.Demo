@@ -4,13 +4,9 @@ namespace TestErpApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NotificationsController : ControllerBase
+    public class NotificationsController(IServiceProvider services) : ControllerBase
     {
-        private readonly IServiceProvider _services;
-        public NotificationsController(IServiceProvider services)
-        {
-            _services = services;
-        }
+        private readonly IServiceProvider _services = services;
 
         [HttpGet]
         public IEnumerable<NotificationModel> Get()
@@ -28,7 +24,7 @@ namespace TestErpApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Notify([FromBody]NotificationModel content)
+        public ActionResult Notify([FromBody] NotificationModel content)
         {
             var store = _services.GetService<NotificationStore>();
             store.Add(content);
