@@ -8,4 +8,3 @@ export const routes: Routes = [
     component: HomeComponent,
   },
 ];
-
