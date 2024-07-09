@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProcessedStatus, UpdateStatusDialogComponent } from "../update-status-dialog/update-status-dialog.component";
+import { UpdateStatusDialogComponent } from "../update-status-dialog/update-status-dialog.component";
+import { NotificationModel } from '../models/notification';
+import { ClientService } from '../services/client.service';
+import { ProcessedStatus } from '../models/processedstatus';
 
 @Component({
   selector: 'app-home',
@@ -15,8 +17,8 @@ import { ProcessedStatus, UpdateStatusDialogComponent } from "../update-status-d
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  private http = inject(HttpClient);
-  private baseUrl = inject<string>('BASE_URL' as any);
+  private clientService = inject(ClientService);
+
   notifications = signal<NotificationModel[]>([]);
   public file = signal<string>('');
   showDialog = signal(false);
@@ -31,26 +33,17 @@ export class HomeComponent {
     interval(2000)
       .pipe(
         switchMap(() =>
-          this.http.get<NotificationModel>(this.baseUrl + 'notifications'),
+          this.clientService.getNotifications()
         ),
         catchError((error) => (this.file = error)),
       )
       .subscribe((result) => (this.notifications.set(result as NotificationModel[])));
-    this.http
-      .get<KeyModel>(this.baseUrl + 'key')
-      .subscribe((result) => (this.key = result.key));
+    this.clientService.getKey().subscribe((result) => (this.key = result.key));
   }
 
   public GetFile(notification: NotificationModel) {
-    return this.http
-      .get(notification.dataUrl, {
-        responseType: 'text',
-        headers: {
-          'Ocp-Apim-Subscription-Key': this.key,
-          Accept: this.askJson ? 'application/json' : 'application/xml',
-          Authorization: 'Bearer ' + notification.token,
-        },
-      })
+
+    return this.clientService.GetFile(notification, this.key, this.askJson)
       .subscribe(
         (result) =>
         (this.file.set(this.IsJson(result)
@@ -59,13 +52,13 @@ export class HomeComponent {
         ));
   }
   public saveKey() {
-    this.http.post(this.baseUrl + 'key', { key: this.key }).subscribe(() => { });
+    this.clientService.saveKey(this.key).subscribe(() => { });
   }
   public notificationIdentifier(_index: number, item: NotificationModel) {
     return item.dataUrl;
   }
   public clearNotifications() {
-    this.http.delete(this.baseUrl + 'notifications').subscribe(() => { });
+    this.clientService.clearNotifications().subscribe(() => { });
   }
   private IsJson(value: string): boolean {
     try {
@@ -86,14 +79,7 @@ export class HomeComponent {
   }
 
   public handleDialogSubmit(event: { processedStatus: ProcessedStatus, comments: string }, notification: NotificationModel): void {
-    // Handle the submit action here
-
-    const apiUrl = notification.dataUrl.split('/applications')[0];
-    const statusEndpoint = `files/${this.applicationName()}/${this.fileIdFromNotification()}/status?version=${this.version()}`;
-    const formData = { processedStatus: event.processedStatus, comments: event.comments };
-    console.log('Posting to:', statusEndpoint, 'with:', formData);
-    console.log('Posting to:', apiUrl + statusEndpoint, 'with:', formData);
-    this.http.post(apiUrl + statusEndpoint, formData).subscribe(() => { });
+    this.clientService.updateStatus(this.applicationName()[0], this.fileIdFromNotification()[0], this.version()[0], notification, event.processedStatus, event.comments);
     this.closeNotificationDialog();
   }
 
@@ -101,16 +87,4 @@ export class HomeComponent {
 
 
 
-interface NotificationModel {
-  companyId: string;
-  fileId: string;
-  fileVersion: string;
-  applicationName: string;
-  dataUrl: string;
-  entityStatus: string;
-  token: string;
-}
 
-interface KeyModel {
-  key: string;
-}

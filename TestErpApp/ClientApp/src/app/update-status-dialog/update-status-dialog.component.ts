@@ -1,10 +1,8 @@
 import { Component, computed, EventEmitter, Input, model, output, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProcessedStatus } from '../models/processedstatus';
 
-export enum ProcessedStatus {
-  Succeeded = 'Succeeded',
-  Failed = 'Failed'
-}
+
 
 @Component({
   selector: 'app-update-status-dialog',
