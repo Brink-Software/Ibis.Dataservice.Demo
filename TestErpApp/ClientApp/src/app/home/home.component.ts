@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
@@ -21,9 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class HomeComponent {
   private http = inject(HttpClient);
   private baseUrl = inject<string>('BASE_URL' as any);
-  private changeDetectorRef = inject(ChangeDetectorRef);
   public notifications: any;
-  public file: any;
+  public file = signal<string>('');
   public askJson: boolean = false;
   public isJson: boolean = false;
   public key: string = '';
@@ -52,21 +46,21 @@ export class HomeComponent {
           Authorization: 'Bearer ' + notification.token,
         },
       })
-      .subscribe((result) => {
-        this.file = this.IsJson(result)
+      .subscribe(
+        (result) =>
+        (this.file.set(this.IsJson(result)
           ? JSON.parse(result)
-          : result.toString();
-        this.changeDetectorRef.detectChanges();
-      });
+          : result.toString())
+        ));
   }
   public saveKey() {
-    this.http.post(this.baseUrl + 'key', { key: this.key }).subscribe(() => {});
+    this.http.post(this.baseUrl + 'key', { key: this.key }).subscribe(() => { });
   }
   public notificationIdentifier(_index: number, item: NotificationModel) {
     return item.dataUrl;
   }
   public clearNotifications() {
-    this.http.delete(this.baseUrl + 'notifications').subscribe(() => {});
+    this.http.delete(this.baseUrl + 'notifications').subscribe(() => { });
   }
   private IsJson(value: string): boolean {
     try {

@@ -13,19 +13,23 @@
 <div class="box">
   <div class="notifications">
     <h2>Notificaties</h2>
-    <button class="btn btn-danger" (click)="clearNotifications()">Notificaties verwijderen</button>
-    @for (notification of notifications; track notificationIdentifier($index, notification)) {
-      <div>
-        <pre>{{ notification | json }}</pre>
-        @if (notification.dataUrl) {
-          <button class="btn btn-primary" (click)="GetFile(notification)">Bestand ophalen</button>
-        }
-      </div>
+    <button class="btn btn-danger" (click)="clearNotifications()">
+      Notificaties verwijderen
+    </button>
+    @for (notification of notifications; track notificationIdentifier($index,
+    notification)) {
+    <div>
+      <pre>{{ notification | json }}</pre>
+      @if (notification.dataUrl) {
+      <button class="btn btn-primary" (click)="GetFile(notification)">
+        Bestand ophalen
+      </button>
+      }
+    </div>
     }
   </div>
   <div class="files">
     <h2>Bestand</h2>
-    <pre>{{isJson ? (file | json) : file}}</pre>
+    <pre>{{ isJson ? (file() | json) : file() }}</pre>
   </div>
 </div>
-
