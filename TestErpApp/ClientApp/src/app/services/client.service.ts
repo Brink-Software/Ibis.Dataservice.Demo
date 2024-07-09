@@ -40,11 +40,17 @@ export class ClientService {
     return this.httpClient.delete(this.baseUrl + 'notifications');
   }
 
-  public updateStatus(applicationName: string, fileId: string, version: string, notification: NotificationModel, processedStatus: string, comments: string) {
-    const apiUrl = notification.dataUrl.split('/applications')[0];
-    const statusEndpoint = `files/${applicationName}/${fileId}/status?version=${version}`;
+  public updateStatus(applicationName: string, fileId: string, version: string, notification: NotificationModel, processedStatus: string, comments: string, subscriptionKey: string, jsonOrXml: boolean) {
+    const apiUrl = notification.dataUrl.split('/applications')[0] + '/';
+    const statusEndpoint = `applications/${applicationName}/files/${fileId}/status?version=${version}`;
     const formData = { processedStatus: processedStatus, comments };
 
-    return this.httpClient.post(apiUrl + statusEndpoint, formData).subscribe(() => { });
+    return this.httpClient.post(apiUrl + statusEndpoint, formData, {
+      headers: {
+        'Ocp-Apim-Subscription-Key': subscriptionKey,
+        Accept: jsonOrXml ? 'application/json' : 'application/xml',
+        Authorization: 'Bearer ' + notification.token,
+      },
+    }).subscribe(() => { });
   }
 }

@@ -79,7 +79,7 @@ export class HomeComponent {
   }
 
   public handleDialogSubmit(event: { processedStatus: ProcessedStatus, comments: string }, notification: NotificationModel): void {
-    this.clientService.updateStatus(this.applicationName()[0], this.fileIdFromNotification()[0], this.version()[0], notification, event.processedStatus, event.comments);
+    this.clientService.updateStatus(this.applicationName()[0], this.fileIdFromNotification()[0], this.version()[0], notification, event.processedStatus, event.comments, this.key, this.askJson);
     this.closeNotificationDialog();
   }
 
