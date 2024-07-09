@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
@@ -16,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class HomeComponent {
   private http = inject(HttpClient);
   private baseUrl = inject<string>('BASE_URL' as any);
+  private changeDetectorRef = inject(ChangeDetectorRef);
   public notifications: any;
   public file: any;
   public askJson: boolean = false;
@@ -46,12 +52,12 @@ export class HomeComponent {
           Authorization: 'Bearer ' + notification.token,
         },
       })
-      .subscribe(
-        (result) =>
-          (this.file = this.IsJson(result)
-            ? JSON.parse(result)
-            : result.toString()),
-      );
+      .subscribe((result) => {
+        this.file = this.IsJson(result)
+          ? JSON.parse(result)
+          : result.toString();
+        this.changeDetectorRef.detectChanges();
+      });
   }
   public saveKey() {
     this.http.post(this.baseUrl + 'key', { key: this.key }).subscribe(() => {});
