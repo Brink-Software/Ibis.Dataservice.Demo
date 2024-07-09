@@ -16,14 +16,27 @@
     <button class="btn btn-danger" (click)="clearNotifications()">
       Notificaties verwijderen
     </button>
-    @for (notification of notifications; track notificationIdentifier($index,
+    @for (notification of notifications(); track notificationIdentifier($index,
     notification)) {
     <div>
       <pre>{{ notification | json }}</pre>
-      @if (notification.dataUrl) {
-      <button class="btn btn-primary" (click)="GetFile(notification)">
-        Bestand ophalen
-      </button>
+      @defer(when notification.dataUrl !== null || notification.dataUrl !=='' ||
+      notification.dataUrl !== undefined) {
+
+      <div class="button-group">
+        <button class="btn btn-primary" (click)="GetFile(notification)">
+          Bestand ophalen
+        </button>
+        <button class="btn btn-primary" (click)="openNotificationDialog()">
+          Update Status (popup)
+        </button>
+        @if(showDialog()) {
+        <app-update-status-dialog
+          (close)="closeNotificationDialog()"
+          (submit)="handleDialogSubmit($event, notification)"
+        />
+        }
+      </div>
       }
     </div>
     }

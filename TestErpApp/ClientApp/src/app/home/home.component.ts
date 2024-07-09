@@ -1,14 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProcessedStatus, UpdateStatusDialogComponent } from "../update-status-dialog/update-status-dialog.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, UpdateStatusDialogComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,8 +17,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class HomeComponent {
   private http = inject(HttpClient);
   private baseUrl = inject<string>('BASE_URL' as any);
-  public notifications: any;
+  notifications = signal<NotificationModel[]>([]);
   public file = signal<string>('');
+  showDialog = signal(false);
+  fileIdFromNotification = computed(() => this.notifications().map(n => n.fileId));
+  applicationName = computed(() => this.notifications().map(n => n.applicationName));
+  version = computed(() => this.notifications().map(n => n.fileVersion || "2022-02-16T11:12:56.3052287Z"));
   public askJson: boolean = false;
   public isJson: boolean = false;
   public key: string = '';
@@ -30,7 +35,7 @@ export class HomeComponent {
         ),
         catchError((error) => (this.file = error)),
       )
-      .subscribe((result) => (this.notifications = result));
+      .subscribe((result) => (this.notifications.set(result as NotificationModel[])));
     this.http
       .get<KeyModel>(this.baseUrl + 'key')
       .subscribe((result) => (this.key = result.key));
@@ -72,7 +77,29 @@ export class HomeComponent {
       return false;
     }
   }
+  public openNotificationDialog(): void {
+    this.showDialog.set(true);
+  }
+
+  public closeNotificationDialog(): void {
+    this.showDialog.set(false);
+  }
+
+  public handleDialogSubmit(event: { processedStatus: ProcessedStatus, comments: string }, notification: NotificationModel): void {
+    // Handle the submit action here
+
+    const apiUrl = notification.dataUrl.split('/applications')[0];
+    const statusEndpoint = `files/${this.applicationName()}/${this.fileIdFromNotification()}/status?version=${this.version()}`;
+    const formData = { processedStatus: event.processedStatus, comments: event.comments };
+    console.log('Posting to:', statusEndpoint, 'with:', formData);
+    console.log('Posting to:', apiUrl + statusEndpoint, 'with:', formData);
+    this.http.post(apiUrl + statusEndpoint, formData).subscribe(() => { });
+    this.closeNotificationDialog();
+  }
+
 }
+
+
 
 interface NotificationModel {
   companyId: string;

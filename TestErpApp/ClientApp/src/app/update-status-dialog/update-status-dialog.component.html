@@ -1,0 +1,20 @@
+<div class="dialog-backdrop">
+  <div class="dialog-content">
+    <h1>Update Status</h1>
+    <label for="processedStatus">Processed Status:</label>
+    <select id="processedStatus" [(ngModel)]="processedStatus">
+      @for (status of processedStatusOptions; track $index) {
+      <option>
+        {{ status }}
+      </option>
+      }
+    </select>
+
+    <label for="comments">Comments:</label>
+    <textarea id="comments" [(ngModel)]="comments" maxlength="250"></textarea>
+    <div>{{ remainingCharacters() }} characters remaining</div>
+
+    <button class="btn btn-secondary" (click)="onClose()">Close</button>
+    <button class="btn btn-primary" (click)="onSubmit()">OK</button>
+  </div>
+</div>
