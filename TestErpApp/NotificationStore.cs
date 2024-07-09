@@ -1,23 +1,20 @@
-﻿using TestErpApp.Controllers;
+﻿namespace TestErpApp;
 
-namespace TestErpApp
+public class NotificationStore
 {
-    public class NotificationStore
+    private readonly List<NotificationModel> _notifications = [];
+    public void Add(NotificationModel notification)
     {
-        private List<NotificationModel> _notifications = new List<NotificationModel>();
-        public void Add(NotificationModel notification)
-        {
-            _notifications.Add(notification);
-        }
+        _notifications.Add(notification);
+    }
 
-        public void Clear()
-        {
-            _notifications.Clear();
-        }
+    public void Clear()
+    {
+        _notifications.Clear();
+    }
 
-        public IEnumerable<NotificationModel> Get()
-        {
-            return _notifications;
-        }
+    public IEnumerable<NotificationModel> Get()
+    {
+        return _notifications;
     }
 }

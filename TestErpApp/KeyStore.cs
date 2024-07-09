@@ -1,16 +1,15 @@
-﻿namespace TestErpApp
+﻿namespace TestErpApp;
+
+public class KeyStore
 {
-    public class KeyStore
+    private string _key = string.Empty;
+
+    public string Key
     {
-        private string _key = string.Empty;
-        
-        public string Key
+        get => _key;
+        set
         {
-            get => _key;
-            set 
-            {
-                _key = value;
-            } 
+            _key = value;
         }
     }
 }
