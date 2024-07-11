@@ -1,4 +1,4 @@
 export enum ProcessedStatus {
-  Succeeded = 'Succeeded',
-  Failed = 'Failed',
+    Succeeded = 'Succeeded',
+    Failed = 'Failed',
 }
