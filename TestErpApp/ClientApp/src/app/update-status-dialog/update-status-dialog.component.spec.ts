@@ -10,9 +10,8 @@ describe('UpdateStatusDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UpdateStatusDialogComponent],
-      providers: [ReactiveFormsModule, FormsModule]
-    })
-      .compileComponents();
+      providers: [ReactiveFormsModule, FormsModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UpdateStatusDialogComponent);
     component = fixture.componentInstance;

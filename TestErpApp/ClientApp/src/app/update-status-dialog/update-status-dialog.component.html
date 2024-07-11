@@ -4,9 +4,9 @@
     <label for="processedStatus">Processed Status:</label>
     <select id="processedStatus" [(ngModel)]="processedStatus">
       @for (status of processedStatusOptions; track $index) {
-      <option>
-        {{ status }}
-      </option>
+        <option>
+          {{ status }}
+        </option>
       }
     </select>
 

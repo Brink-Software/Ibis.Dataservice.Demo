@@ -1,4 +1,7 @@
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ClientService } from './client.service';
 import { NotificationModel } from '../models/notification';
@@ -11,9 +14,11 @@ describe('ClientService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [provideHttpClient(), provideHttpClientTesting(),
-      { provide: 'BASE_URL', useValue: 'http://localhost/' }
-      ]
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: 'BASE_URL', useValue: 'http://localhost/' },
+      ],
     });
     service = TestBed.inject(ClientService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -28,7 +33,10 @@ describe('ClientService', () => {
   });
 
   it('should call GetFile with correct URL and headers', () => {
-    const notification: NotificationModel = { dataUrl: 'http://example.com', token: 'token' } as NotificationModel;
+    const notification: NotificationModel = {
+      dataUrl: 'http://example.com',
+      token: 'token',
+    } as NotificationModel;
     const subscriptionKey = 'key';
     const jsonOrXml = true;
 
@@ -36,7 +44,9 @@ describe('ClientService', () => {
 
     const req = httpMock.expectOne('http://example.com');
     expect(req.request.method).toBe('GET');
-    expect(req.request.headers.get('Ocp-Apim-Subscription-Key')).toBe(subscriptionKey);
+    expect(req.request.headers.get('Ocp-Apim-Subscription-Key')).toBe(
+      subscriptionKey,
+    );
     expect(req.request.headers.get('Accept')).toBe('application/json');
     expect(req.request.headers.get('Authorization')).toBe('Bearer token');
   });
@@ -74,18 +84,34 @@ describe('ClientService', () => {
 
   it('should call updateStatus with correct URL and body', () => {
     const applicationName = 'app';
-    const notification: NotificationModel = { dataUrl: `https://example.com/applications/${applicationName}`, token: 'token' } as NotificationModel;
+    const notification: NotificationModel = {
+      dataUrl: `https://example.com/applications/${applicationName}`,
+      token: 'token',
+    } as NotificationModel;
     const fileId = '1c03adaa-7aee-48e6-a53c-21eaac9e8908';
     const utcdateversion = '2021-01-01T00:00:00.000Z';
     const processedStatus = 'processed';
     const comments = 'comments';
     const subscriptionKey = 'key';
 
+    service.updateStatus(
+      applicationName,
+      fileId,
+      utcdateversion,
+      notification,
+      processedStatus,
+      comments,
+      subscriptionKey,
+      true,
+    );
 
-    service.updateStatus(applicationName, fileId, utcdateversion, notification, processedStatus, comments, subscriptionKey, true);
-
-    const req = httpMock.expectOne(`https://example.com/applications/${applicationName}/files/${fileId}/status?version=${utcdateversion}`);
+    const req = httpMock.expectOne(
+      `https://example.com/applications/${applicationName}/files/${fileId}/status?version=${utcdateversion}`,
+    );
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ processedStatus: processedStatus, comments });
+    expect(req.request.body).toEqual({
+      processedStatus: processedStatus,
+      comments,
+    });
   });
 });
