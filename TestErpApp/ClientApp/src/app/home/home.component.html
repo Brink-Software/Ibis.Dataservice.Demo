@@ -1,48 +1,58 @@
 <h1>Brink Test ERP Systeem</h1>
 
 <div class="keybox">
-  <label>API Key:</label>
-  <input type="password" name="key" [(ngModel)]="key" (blur)="saveKey()" />
+    <label>API Key:</label>
+    <input type="password" name="key" [(ngModel)]="key" (blur)="saveKey()" />
 </div>
 
 <div class="jsonbox">
-  <input type="checkbox" [(ngModel)]="askJson" id="jsoncheck" />
-  <label for="jsoncheck"> Haal bestand op als JSON</label>
+    <input type="checkbox" [(ngModel)]="askJson" id="jsoncheck" />
+    <label for="jsoncheck"> Haal bestand op als JSON</label>
 </div>
 
 <div class="box">
-  <div class="notifications">
-    <h2>Notificaties</h2>
-    <button class="btn btn-danger" (click)="clearNotifications()">
-      Notificaties verwijderen
-    </button>
-    @for (notification of notifications(); track notificationIdentifier($index,
-    notification)) {
-    <div>
-      <pre>{{ notification | json }}</pre>
-      @defer(when notification.dataUrl !== null || notification.dataUrl !=='' ||
-      notification.dataUrl !== undefined) {
-
-      <div class="button-group">
-        <button class="btn btn-primary" (click)="GetFile(notification)">
-          Bestand ophalen
+    <div class="notifications">
+        <h2>Notificaties</h2>
+        <button class="btn btn-danger" (click)="clearNotifications()">
+            Notificaties verwijderen
         </button>
-        <button class="btn btn-primary" (click)="openNotificationDialog()">
-          Update Status (popup)
-        </button>
-        @if(showDialog()) {
-        <app-update-status-dialog
-          (close)="closeNotificationDialog()"
-          (submit)="handleDialogSubmit($event, notification)"
-        />
+        @for (notification of notifications(); track $index) {
+            <div>
+                <pre>{{ notification | json }}</pre>
+                @defer (
+                    when notification.dataUrl !== null || notification.dataUrl !==''
+      || notification.dataUrl !== undefined
+                ) {
+                    <div class="button-group">
+                        <button
+                            class="btn btn-primary"
+                            (click)="GetFile(notification)"
+                        >
+                            Bestand ophalen
+                        </button>
+                        <button
+                            class="btn btn-primary"
+                            (click)="openNotificationDialog()"
+                        >
+                            Update Status (popup)
+                        </button>
+                        @if (showDialog()) {
+                            <app-update-status-dialog
+                                (close)="closeNotificationDialog()"
+                                (submit)="
+                                    handleDialogSubmit($event, notification)
+                                "
+                            />
+                        }
+                    </div>
+                }
+            </div>
+        } @empty {
+            <p>Geen notificaties</p>
         }
-      </div>
-      }
     </div>
-    }
-  </div>
-  <div class="files">
-    <h2>Bestand</h2>
-    <pre>{{ isJson ? (file() | json) : file() }}</pre>
-  </div>
+    <div class="files">
+        <h2>Bestand</h2>
+        <pre>{{ isJson ? (file() | json) : file() }}</pre>
+    </div>
 </div>

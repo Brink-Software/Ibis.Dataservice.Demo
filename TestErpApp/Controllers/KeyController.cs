@@ -1,4 +1,4 @@
-﻿namespace TestErpApp.Controllers;
+namespace TestErpApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,7 +1,12 @@
-﻿namespace TestErpApp;
+namespace TestErpApp;
 
 public class KeyStore
 {
+    public KeyStore(Logger<KeyStore> logger)
+    {
+        Key = "TestKey";
+        Logger = logger;
+    }
     private string _key = string.Empty;
 
     public string Key
@@ -12,4 +17,6 @@ public class KeyStore
             _key = value;
         }
     }
+
+    public Logger<KeyStore> Logger { get; }
 }

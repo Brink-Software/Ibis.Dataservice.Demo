@@ -1,3 +1,3 @@
 export interface KeyModel {
-	key: string;
+    key: string;
 }
