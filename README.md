@@ -107,3 +107,4 @@ $headers = @{
 }
 Invoke-RestMethod -Uri $ibisErpServiceUri  -Body "{`"processedStatus`": `"Succesfull`" }" -ContentType "application/json" -Method Post -Headers $headers
 ```
+Currently, the enum values for the `processedStatus` are `Succesfull`, `Failed`
