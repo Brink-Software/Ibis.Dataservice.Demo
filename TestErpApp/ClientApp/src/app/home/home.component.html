@@ -16,7 +16,7 @@
     <button class="btn btn-danger" (click)="clearNotifications()">
       Notificaties verwijderen
     </button>
-    @for (notification of notifications(); track notification.dataUrl) {
+    @for (notification of notifications(); track $index) {
       <div>
         <pre>{{ notification | json }}</pre>
         @defer (
