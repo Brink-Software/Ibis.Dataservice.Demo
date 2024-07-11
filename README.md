@@ -6,7 +6,8 @@ Brink Software has developed an API to integrate the calculation software with E
 
 The customer configures one or more ERP integrations in the Mijn Ibis environment. An ERP integration consists of a name and a url that is used to post the notification to, and optionally some data used to authenticate against the ERP system webhook url.
 
-The customer can then export a file to the Ibis ERP Service using the Ibis calculation software. The Ibis ERP Service then sends a notification to the ERP system with a URL to the file and a token to access the file. The ERP system can then request the file from the calculation software using the URL and token. The ERP system processes the file and does whatever it needs to do with it.
+The customer can then export a file to the Ibis ERP Service using the Ibis calculation software. The Ibis ERP Service then sends a notification to the ERP system with a URL to the file and a token to access the file. The ERP system can then request the file from the calculation software using the URL and token. The ERP system processes the file and does whatever it needs to do with it. When the processing is done, the ERP system sends a status update to the Ibis ERP Service regarding the processed status. 
+In the Ibis calculation software, the user can independently see the status updates of the file.
 
 ```mermaid
 sequenceDiagram
@@ -87,8 +88,22 @@ To request the file from the Ibis Erp Service you can use the powershell command
 $dataUrl = 'https://dataservice.ibis.nl/public/applications/demoerp/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z'
 $headers = @{
     'Ocp-Apim-Subscription-Key' = '<Api Key goes here>'
-    'Authorization' = 'bearer <Token goes here>'
+    'Authorization' = 'Bearer <Token goes here>'
 }
 
 Invoke-RestMethod -Uri $dataUrl  -ContentType "application/json" -Method Get -Headers $headers -OutFile file.xml
+```
+
+### Update the status of the file
+
+To update the status of the file you can use the powershell command below. the `dataUrl` field of the notification object is the endpoint base url, combined with status. The `status` is the status of the file. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Erp Service.
+In example, if the `dataUrl` if the notification is `https://dataservice.ibis.nl/public/applications/demoerp/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z` and the status is `Succesfull` the powershell command would be as follows:
+
+```powershell
+$ibisErpServiceUri = 'https://dataservice.ibis.nl/public/applications/demoerp/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3/status?version=2022-02-16T11:12:56.3052287Z'
+$headers = @{
+    'Ocp-Apim-Subscription-Key' = '<Api Key goes here>'
+    'Authorization' = 'Bearer <Token goes here>'
+}
+Invoke-RestMethod -Uri $ibisErpServiceUri  -Body "{`"processedStatus`": `"Succesfull`" }" -ContentType "application/json" -Method Post -Headers $headers
 ```
