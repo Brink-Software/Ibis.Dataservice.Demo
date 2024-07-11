@@ -44,27 +44,26 @@ export class ClientService {
   }
 
   public updateStatus(
-    applicationName: string,
-    fileId: string,
     version: string,
-    notification: NotificationModel,
-    processedStatus: string,
-    comments: string,
+    notificationDataUrl: string,
+    statusBody: { processedStatus: string, comments: string },
     subscriptionKey: string,
     jsonOrXml: boolean,
+    bearerToken: string,
   ) {
-    const apiUrl = notification.dataUrl.split('/applications')[0] + '/';
-    const statusEndpoint = `applications/${applicationName}/files/${fileId}/status?version=${version}`;
-    const formData = { processedStatus: processedStatus, comments };
+    const apiUrl = notificationDataUrl.split('?version')[0];
+    const statusEndpoint = `/status?version=${version}`;
+
+    const endpoint = apiUrl + statusEndpoint;
 
     return this.httpClient
-      .post(apiUrl + statusEndpoint, formData, {
+      .post(endpoint, statusBody, {
         headers: {
           'Ocp-Apim-Subscription-Key': subscriptionKey,
           Accept: jsonOrXml ? 'application/json' : 'application/xml',
-          Authorization: 'Bearer ' + notification.token,
+          Authorization: 'Bearer ' + bearerToken,
         },
       })
-      .subscribe(() => {});
+      .subscribe(() => { });
   }
 }

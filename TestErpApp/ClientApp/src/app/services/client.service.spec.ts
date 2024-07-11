@@ -84,33 +84,35 @@ describe('ClientService', () => {
 
   it('should call updateStatus with correct URL and body', () => {
     const applicationName = 'app';
-    const notification: NotificationModel = {
-      dataUrl: `https://example.com/applications/${applicationName}`,
-      token: 'token',
-    } as NotificationModel;
     const fileId = '1c03adaa-7aee-48e6-a53c-21eaac9e8908';
     const utcdateversion = '2021-01-01T00:00:00.000Z';
+    const notification: NotificationModel = {
+      dataUrl: `https://example.com/public/applications/${applicationName}/files/${fileId}?version=${utcdateversion}`,
+      token: 'token',
+    } as NotificationModel;
     const processedStatus = 'processed';
     const comments = 'comments';
     const subscriptionKey = 'key';
+    const jsonOrXml = true;
 
     service.updateStatus(
-      applicationName,
-      fileId,
       utcdateversion,
-      notification,
-      processedStatus,
-      comments,
+      notification.dataUrl,
+      {
+        processedStatus,
+        comments
+      },
       subscriptionKey,
-      true,
+      jsonOrXml,
+      notification.token
     );
 
     const req = httpMock.expectOne(
-      `https://example.com/applications/${applicationName}/files/${fileId}/status?version=${utcdateversion}`,
+      `https://example.com/public/applications/${applicationName}/files/${fileId}/status?version=${utcdateversion}`,
     );
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({
-      processedStatus: processedStatus,
+      processedStatus,
       comments,
     });
   });
