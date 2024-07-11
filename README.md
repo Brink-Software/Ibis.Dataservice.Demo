@@ -17,7 +17,8 @@ sequenceDiagram
   Ibis ERP Service (Cloud)->>ERP System: 
   ERP System->>ERP System: Process file
   ERP System->>Ibis ERP Service (Cloud): Send status update
-  Ibis ERP Service (Cloud)->> Ibis Software: Retrieve Status updates
+  Ibis ERP Service (Cloud)-->> Ibis Software: Retrieve Status updates
+  Note over Ibis ERP Service (Cloud),Ibis Software: Get all Status updates
 ```
 
 When the user submits the file and the ERP system needs additional data, the user is presented with a form to fill in the data. This data is included in the notification sent to the ERP system using the `customProperties` object.
