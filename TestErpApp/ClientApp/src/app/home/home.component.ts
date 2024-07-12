@@ -101,15 +101,18 @@ export class HomeComponent {
         event: { processedStatus: ProcessedStatus; comments: string },
         notification: NotificationModel,
     ): void {
-        this.clientService.updateStatus(
-            this.applicationName()[0],
-            this.fileIdFromNotification()[0],
+        const statusBody = {
+            processedStatus: event.processedStatus,
+            comments: event.comments
+        };
+    
+        this.clientService.updateStatus(           
             this.version()[0],
-            notification,
-            event.processedStatus,
-            event.comments,
+            notification.dataUrl,
+            statusBody,
             this.key,
             this.askJson,
+            notification.token
         );
         this.closeNotificationDialog();
     }
