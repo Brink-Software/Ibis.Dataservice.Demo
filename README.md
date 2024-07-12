@@ -96,7 +96,7 @@ Invoke-RestMethod -Uri $dataUrl  -ContentType "application/json" -Method Get -He
 
 ### Update the status of the file
 
-To update the status of the file you can use the powershell command below. the `dataUrl` field of the notification object is the endpoint base url, combined with status. The `status` is the status of the file. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Erp Service.
+To update the status of the file you can use the powershell command below. The `dataUrl` field of the notification object is the endpoint base url, combined with status. The `status` is the status of the file. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Erp Service.
 In example, if the `dataUrl` if the notification is `https://dataservice.ibis.nl/public/applications/demoerp/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z` and the status is `Succeeded` the powershell command would be as follows:
 
 ```powershell
@@ -105,6 +105,6 @@ $headers = @{
     'Ocp-Apim-Subscription-Key' = '<Api Key goes here>'
     'Authorization' = 'Bearer <Token goes here>'
 }
-Invoke-RestMethod -Uri $ibisErpServiceUri  -Body "{`"processedStatus`": `"Succeeded`" }" -ContentType "application/json" -Method Post -Headers $headers
+Invoke-RestMethod -Uri $ibisErpServiceUri  -Body "{`"processedStatus`": `"Succeeded`", `"comments`" : `"some comment`"  }" -ContentType "application/json" -Method Post -Headers $headers
 ```
-Currently, the enum values for the `processedStatus` are `Succeeded`, `Failed`
+Currently, the enum values for the `processedStatus` are `Succeeded`, `Failed`. the `comments` field is optional.
