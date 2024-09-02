@@ -13,7 +13,7 @@ In the Ibis calculation software, the user can independently see the status upda
 sequenceDiagram
   Ibis Software->>Ibis Dataservice Service (Cloud): Submit file to Dataservice
   Ibis Dataservice Service (Cloud)->>Ibis Dataservice Service (Cloud): Store file
-  Ibis Dataservice Service (Cloud)->>Dataservice System:Send 'file ready to fetch' notification
+  Ibis Dataservice Service (Cloud)->>External System:Send 'file ready to fetch' notification
   External System->>Ibis Dataservice Service (Cloud): Request file from notification
   Ibis Dataservice Service (Cloud)->>External System: 
   External System->>External System: Process file
