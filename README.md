@@ -98,7 +98,7 @@ Invoke-RestMethod -Uri $dataUrl  -ContentType "application/json" -Method Get -He
 
 ### Update the status of the file
 
-Once the file is requested and processed by the external system the status should be posted to the Ibis Dataservice so the Ibis calculation software can provide the customer with feedback regarding the status of the export.
+Once the file is requested and processed by the external system the status should be posted to the Ibis Dataservice so the Ibis calculation software can provide the customer with feedback regarding the result of the export. For example, whether the file is succesfully processed or that processing failed due to validation errors.
 
 To update the status of the file use the powershell command below. The `dataUrl` field of the notification object is the endpoint base url, combined with status. The `status` is the status of the file. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Dataservice.
 In example, if the `dataUrl` of the notification is `https://dataservice.ibis.nl/public/applications/demoDataservice/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z` and the status is `Succeeded` the powershell command would be:
