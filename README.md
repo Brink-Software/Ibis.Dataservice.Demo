@@ -28,9 +28,11 @@ When the user submits the file and the external system needs additional data, th
 
 The Ibis Dataservice Service supports OAuth authentication against the web hook url provided by the external system.
 
-When the external system requests the file from the notification it needs to send a Brink Software provided Api Key to authenticate against the Ibis Dataservice Service.
+When the external system requests the file from the notification it needs to send a Brink Software provided Api Key as the `Ocp-Apim-Subscription-Key` header value to authenticate against the Ibis Dataservice Service.
 
 ## Notification example
+
+The following JSON is an example of a notification that is sent to the web hook url provided by the external system when a customer exports a file to the Ibis Dataservice Service using the Ibis calculation software.
 
 ```json
 { 
@@ -60,7 +62,7 @@ We have created a sample webapplication that acts as an external system to demon
 > The following steps need an Api Key to make calls to the Ibis Dataservice Service. Contact Brink Software to get an Api Key. There is one Api Key per integrator, not per customer.
 
 > [!WARNING]  
-> The Api Key is subject to change. In case of misuse or leaked Api Keys Brink Software will change to Api Key so make sure it is configurable. The Api Key is a secret shared between Brink Software and the 3rd party providing the external system. Shared customers should not have access to this Api Key. 
+> The Api Key is subject to change. In case of misuse or leaked Api Keys Brink Software will change to Api Key so make sure it is configurable. The Api Key is a secret shared between Brink Software and the 3rd party providing the external system. Customers should not have access to this Api Key.
 
 1. To get started, get your subscription API key and paste it in the box "API key".
 2. To trigger a notification use the following powershell command that creates a POST request to the Ibis Dataservice service. It needs the Api Key to authenticate the request using the `Ocp-Apim-Subscription-Key` header.
