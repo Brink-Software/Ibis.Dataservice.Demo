@@ -1,6 +1,6 @@
 # Ibis Dataservice
 
-Brink Software has developed an API to integrate the calculation software with external systems. When a TradXML datafile is targeted for export to an external system, the calculation software sends a notification to the external system using a webhook. The notification contains a URL to the datafile and a token to access the file. The external system can then request the file from the calculation software using the URL and token.
+Brink Software has developed a Web API to integrate the calculation software with external systems. When a TradXML datafile is targeted for export to an external system, the calculation software sends a notification to the external system using a webhook. The notification contains a URL to the datafile and a token to access the file. The external system can then request the file from the calculation software using the URL and token.
 
 ## Process overview
 
