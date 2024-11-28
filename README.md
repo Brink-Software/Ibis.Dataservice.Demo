@@ -65,7 +65,7 @@ We have created a sample webapplication that acts as an external system to demon
 > The Api Key is subject to change. In case of misuse or leaked Api Keys Brink Software will change to Api Key so make sure it is configurable. The Api Key is a secret shared between Brink Software and the 3rd party providing the external system. Customers should not have access to this Api Key.
 
 1. To get started, get your subscription API key and paste it in the box "API key".
-2. To trigger a notification use the following powershell command that creates a POST request to the Ibis Dataservice. It needs the Api Key to authenticate the request using the `Ocp-Apim-Subscription-Key` header.
+2. Simulate a file export from the Ibis calculation software by triggering a notification using the following powershell command that creates a POST request to the Ibis Dataservice. It needs the Api Key to authenticate the request using the `Ocp-Apim-Subscription-Key` header.
 
 ```powershell
 $ibisDataserviceServiceUri = 'https://dataservice.ibis.nl/public/notification'
@@ -77,14 +77,14 @@ $headers = @{
 Invoke-RestMethod -Uri $ibisDataserviceServiceUri  -Body "{`"url`": `"${DataserviceAppWebhookUri}`", `"customProperties`": { `"key`" : `"value`" }}" -ContentType "application/json" -Method Post -Headers $headers
 ```
 
-3. The webapplication will receive the notification and display it in the interface.
+3. The webapplication acts as the external system and will receive the notification and display it in the interface.
 4. Press the "Bestanden Ophalen" button which appears under the notification object.
 5. See the retrieved file under the column "Bestand".
 6. If desired, the file can be requested as Json if the checkbox "Haal bestand op als JSON" is checked.
 
 ### Request the file
 
-To request the file from the Ibis Dataservice you can use the powershell command below. Take the value of `dataUrl` from the notification as url and use the `token` value as bearer token in the `Authorization` header. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Dataservice. :
+To request the file from the Ibis Dataservice you can use the powershell command below. Take the value of `dataUrl` from the notification as url and use the `token` value as bearer token in the `Authorization` header. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Dataservice.
 
 ```powershell
 $dataUrl = 'https://dataservice.ibis.nl/public/applications/demoDataservice/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z'
