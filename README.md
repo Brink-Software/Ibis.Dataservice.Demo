@@ -6,33 +6,33 @@ Brink Software has developed an API to integrate the calculation software with e
 
 The customer configures one or more external integrations in the Mijn Ibis environment. An external integration consists of a name and a url that is used to post the notification to, and optionally some data used to authenticate against the external system webhook url.
 
-The customer can then export a file to the Ibis Dataservice Service using the Ibis calculation software. The Ibis Dataservice Service then sends a notification to the external system with a URL to the file and a token to access the file. The external system can then request the file from the calculation software using the URL and token. The external system processes the file and does whatever it needs to do with it. When the processing is done, the Dataservice system sends a status update to the Ibis Dataservice Service regarding the processed status. 
+The customer can then export a file to the Ibis Dataservice using the Ibis calculation software. The Ibis Dataservice then sends a notification to the external system with a URL to the file and a token to access the file. The external system can then request the file from the calculation software using the URL and token. The external system processes the file and does whatever it needs to do with it. When the processing is done, the Dataservice system sends a status update to the Ibis Dataservice regarding the processed status. 
 In the Ibis calculation software, the user can independently see the status updates of the file.
 
 ```mermaid
 sequenceDiagram
-  Ibis Software->>Ibis Dataservice Service (Cloud): Submit file to Dataservice
-  Ibis Dataservice Service (Cloud)->>Ibis Dataservice Service (Cloud): Store file
-  Ibis Dataservice Service (Cloud)->>External System:Send 'file ready to fetch' notification
-  External System->>Ibis Dataservice Service (Cloud): Request file from notification
-  Ibis Dataservice Service (Cloud)->>External System: 
+  Ibis Software->>Ibis Dataservice (Cloud): Submit file to Dataservice
+  Ibis Dataservice (Cloud)->>Ibis Dataservice (Cloud): Store file
+  Ibis Dataservice (Cloud)->>External System:Send 'file ready to fetch' notification
+  External System->>Ibis Dataservice (Cloud): Request file from notification
+  Ibis Dataservice (Cloud)->>External System: 
   External System->>External System: Process file
-  External System->>Ibis Dataservice Service (Cloud): Send status update
-  Ibis Software ->> Ibis Dataservice Service (Cloud): Retrieve Status updates
-  Ibis Dataservice Service (Cloud) ->> Ibis Software: 
+  External System->>Ibis Dataservice (Cloud): Send status update
+  Ibis Software ->> Ibis Dataservice (Cloud): Retrieve Status updates
+  Ibis Dataservice (Cloud) ->> Ibis Software: 
 ```
 
 When the user submits the file and the external system needs additional data, the user is presented with a form to fill in the data. This data is included in the notification sent to the external system using the `customProperties` object.
 
 ## Authentication
 
-The Ibis Dataservice Service supports OAuth authentication against the web hook url provided by the external system.
+The Ibis Dataservice supports OAuth authentication against the web hook url provided by the external system.
 
-When the external system requests the file from the notification it needs to send a Brink Software provided Api Key as the `Ocp-Apim-Subscription-Key` header value to authenticate against the Ibis Dataservice Service.
+When the external system requests the file from the notification it needs to send a Brink Software provided Api Key as the `Ocp-Apim-Subscription-Key` header value to authenticate against the Ibis Dataservice.
 
 ## Notification example
 
-The following JSON is an example of a notification that is sent to the web hook url provided by the external system when a customer exports a file to the Ibis Dataservice Service using the Ibis calculation software.
+The following JSON is an example of a notification that is sent to the web hook url provided by the external system when a customer exports a file to the Ibis Dataservice using the Ibis calculation software.
 
 ```json
 { 
@@ -56,20 +56,20 @@ The file linked to in a notification is an XML file containing metadata and a Tr
 
 ## Test the integration
 
-We have created a sample webapplication that acts as an external system to demonstrate the integration. The application is located [here](https://web-Dataservicedemo-prod.azurewebsites.net/). The application has a simple interface to receive notifications and fetch files.
+We have created a sample webapplication that acts as an external system to demonstrate the integration. The application is located [here](https://web-erpdemo-prod.azurewebsites.net/). The application has a simple interface to receive notifications and fetch files.
 
 > [!IMPORTANT]  
-> The following steps need an Api Key to make calls to the Ibis Dataservice Service. Contact Brink Software to get an Api Key. There is one Api Key per integrator, not per customer.
+> The following steps need an Api Key to make calls to the Ibis Dataservice. Contact Brink Software to get an Api Key. There is one Api Key per integrator, not per customer.
 
 > [!WARNING]  
 > The Api Key is subject to change. In case of misuse or leaked Api Keys Brink Software will change to Api Key so make sure it is configurable. The Api Key is a secret shared between Brink Software and the 3rd party providing the external system. Customers should not have access to this Api Key.
 
 1. To get started, get your subscription API key and paste it in the box "API key".
-2. To trigger a notification use the following powershell command that creates a POST request to the Ibis Dataservice service. It needs the Api Key to authenticate the request using the `Ocp-Apim-Subscription-Key` header.
+2. To trigger a notification use the following powershell command that creates a POST request to the Ibis Dataservice. It needs the Api Key to authenticate the request using the `Ocp-Apim-Subscription-Key` header.
 
 ```powershell
 $ibisDataserviceServiceUri = 'https://dataservice.ibis.nl/public/notification'
-$DataserviceAppWebhookUri = 'https://web-Dataservicedemo-prod.azurewebsites.net/notifications'
+$DataserviceAppWebhookUri = 'https://web-erpdemo-prod.azurewebsites.net/notifications'
 $headers = @{
     'Ocp-Apim-Subscription-Key' = '<Api Key goes here>'
 }
@@ -84,7 +84,7 @@ Invoke-RestMethod -Uri $ibisDataserviceServiceUri  -Body "{`"url`": `"${Dataserv
 
 ### Request the file
 
-To request the file from the Ibis Dataservice Service you can use the powershell command below. Take the value of `dataUrl` from the notification as url and use the `token` value as bearer token in the `Authorization` header. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Dataservice Service. :
+To request the file from the Ibis Dataservice you can use the powershell command below. Take the value of `dataUrl` from the notification as url and use the `token` value as bearer token in the `Authorization` header. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Dataservice. :
 
 ```powershell
 $dataUrl = 'https://dataservice.ibis.nl/public/applications/demoDataservice/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z'
@@ -98,8 +98,10 @@ Invoke-RestMethod -Uri $dataUrl  -ContentType "application/json" -Method Get -He
 
 ### Update the status of the file
 
-To update the status of the file you can use the powershell command below. The `dataUrl` field of the notification object is the endpoint base url, combined with status. The `status` is the status of the file. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Dataservice Service.
-In example, if the `dataUrl` if the notification is `https://dataservice.ibis.nl/public/applications/demoDataservice/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z` and the status is `Succeeded` the powershell command would be as follows:
+Once the file is requested and processed by the external system the status should be posted to the Ibis Dataservice so the Ibis calculation software can provide the customer with feedback regarding the status of the export.
+
+To update the status of the file use the powershell command below. The `dataUrl` field of the notification object is the endpoint base url, combined with status. The `status` is the status of the file. The `Ocp-Apim-Subscription-Key` header is used to authenticate the request to the Ibis Dataservice.
+In example, if the `dataUrl` of the notification is `https://dataservice.ibis.nl/public/applications/demoDataservice/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3?version=2022-02-16T11:12:56.3052287Z` and the status is `Succeeded` the powershell command would be:
 
 ```powershell
 $ibisDataserviceServiceUri = 'https://dataservice.ibis.nl/public/applications/demoDataservice/files/8dd5a784-cd09-4068-8c7c-efdeabe95ac3/status?version=2022-02-16T11:12:56.3052287Z'
