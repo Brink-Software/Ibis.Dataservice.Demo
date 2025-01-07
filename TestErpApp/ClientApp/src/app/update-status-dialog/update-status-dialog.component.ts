@@ -12,10 +12,9 @@ import { ProcessedStatus } from '../models/processedstatus';
 
 @Component({
     selector: 'app-update-status-dialog',
-    standalone: true,
     imports: [ReactiveFormsModule, FormsModule],
     templateUrl: './update-status-dialog.component.html',
-    styleUrl: './update-status-dialog.component.css',
+    styleUrl: './update-status-dialog.component.css'
 })
 export class UpdateStatusDialogComponent {
     close = output();

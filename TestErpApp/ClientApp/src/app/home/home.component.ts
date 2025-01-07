@@ -16,7 +16,6 @@ import { ProcessedStatus } from '../models/processedstatus';
 
 @Component({
     selector: 'app-home',
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,
@@ -25,7 +24,7 @@ import { ProcessedStatus } from '../models/processedstatus';
     ],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
     private clientService = inject(ClientService);
