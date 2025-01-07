@@ -2,7 +2,7 @@ namespace TestErpApp;
 
 public class KeyStore
 {
-    public KeyStore(Logger<KeyStore> logger)
+    public KeyStore(ILogger<KeyStore> logger)
     {
         Key = "TestKey";
         Logger = logger;
@@ -18,5 +18,5 @@ public class KeyStore
         }
     }
 
-    public Logger<KeyStore> Logger { get; }
+    public ILogger<KeyStore> Logger { get; }
 }
