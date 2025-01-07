@@ -29,15 +29,5 @@ public class NotificationsController(IServiceProvider services) : ControllerBase
         return new OkResult();
     }
 }
-
-public class NotificationModel
-{
-    public Guid? FileId { get; set; }
-    public string? FileVersion { get; set; }
-    public string? ApplicationName { get; set; }
-    public Uri? DataUrl { get; set; }
-    public string? Token { get; set; }
 #pragma warning disable IDE1006 // Naming Styles, due to external API
-    public Dictionary<string, string>? customProperties { get; set; }
-#pragma warning restore IDE1006 // Naming Styles
-}
+public record NotificationModel(Guid? FileId, string? FileVersion, string? ApplicationName, Uri? DataUrl, string? Token, Dictionary<string, string>? customProperties);

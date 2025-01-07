@@ -10,10 +10,7 @@ public class KeyController(IServiceProvider services) : ControllerBase
     public KeyModel Get()
     {
         var store = _services.GetService<KeyStore>();
-        return new KeyModel
-        {
-            Key = store?.Key ?? string.Empty
-        };
+        return new KeyModel(store?.Key ?? string.Empty);
     }
 
     [HttpPost]
@@ -26,7 +23,4 @@ public class KeyController(IServiceProvider services) : ControllerBase
     }
 }
 
-public class KeyModel
-{
-    public required string Key { get; set; }
-}
+public record KeyModel(string Key);
