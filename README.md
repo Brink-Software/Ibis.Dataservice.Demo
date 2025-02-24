@@ -50,9 +50,17 @@ The following JSON is an example of a notification that is sent to the web hook 
 
 The same file, identified by the `fileId` can be exported multiple times. Versions are timestamped using the field `fileVersion`. The `dataUrl` is the URL to the file and the `token` is the bearer token to put in the `Authorization` header to access the file. The `customProperties` object contains additional mandatory or optional data that the external system needs to process the file.
 
+## File types
+
+The actual file that can be fetched depends on the application. Calculeren voor Bouw and Calculeren voor Installatietechniek produc a TradXML file and Ibis voor Infra produces a KpdXxl file. 
+
 ### TradXML
 
 The file linked to in a notification is an XML file containing metadata and a TradXML document. An example file can be found [here](Files/demo.xml?raw=1) and a description of TradXML can be found [here](Files/TradXML1-3.pdf?raw=1). 
+
+### KpdXml
+
+The file linked to in a notification is an XML file containing metadata and a KpdXml document.The description of KpdXml can be found [here](https://ibisvoorinfra.ibis.nl/help/index.html?beschrijving-kpdxml.html). 
 
 ## Test the integration
 
