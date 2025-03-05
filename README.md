@@ -6,7 +6,7 @@ Brink Software has developed a Web API to integrate the calculation software wit
 
 The customer configures one or more external integrations in the Mijn Ibis environment. An external integration consists of a name and a url that is used to post the notification to, and optionally some data used to authenticate against the external system webhook url.
 
-The customer can then export a file to the Ibis Dataservice using the Ibis calculation software. The Ibis Dataservice then sends a notification to the external system with a URL to the file and a token to access the file. The external system can then request the file from the calculation software using the URL and token. The external system processes the file and does whatever it needs to do with it. When the processing is done, the Dataservice system sends a status update to the Ibis Dataservice regarding the processed status. 
+The customer can then export a file to the Ibis Dataservice using the Ibis calculation software. The Ibis Dataservice then sends a notification to the external system with a URL to the file and a token to access the file. The external system can then request the file from the calculation software using the URL and token. The external system processes the file and does whatever it needs to do with it. When the processing is done, the Dataservice system sends a status update to the Ibis Dataservice regarding the processed status.
 In the Ibis calculation software, the user can independently see the status updates of the file.
 
 ```mermaid
@@ -52,38 +52,37 @@ The same file, identified by the `fileId` can be exported multiple times. Versio
 
 ## File types
 
-The actual file that can be fetched depends on the application. Calculeren voor Bouw and Calculeren voor Installatietechniek produc a TradXML file and Ibis voor Infra produces a KpdXxl file. 
+The actual file that can be fetched depends on the application. Calculeren voor Bouw and Calculeren voor Installatietechniek produc a TradXML file and Ibis voor Infra produces a KpdXxl file.
 
 ### TradXML
 
-The file linked to in a notification is an XML file containing metadata and a TradXML document. An example file can be found [here](Files/demo.xml?raw=1) and a description of TradXML can be found [here](Files/TradXML1-3.pdf?raw=1). 
+The file linked to in a notification is an XML file containing metadata and a TradXML document. An example file can be found [here](Files/demo.xml?raw=1) and a description of TradXML can be found [here](Files/TradXML1-3.pdf?raw=1).
 
 ### KpdXml
 
-The file linked to in a notification is an XML file containing metadata and a KpdXml document.The description of KpdXml can be found [here](https://ibisvoorinfra.ibis.nl/help/index.html?beschrijving-kpdxml.html). 
+The file linked to in a notification is an XML file containing metadata and a KpdXml document.The description of KpdXml can be found [here](https://ibisvoorinfra.ibis.nl/help/index.html?beschrijving-kpdxml.html).
 
 ## Test the integration
 
-We have created a sample webapplication that acts as an external system to demonstrate the integration. The application is located [here](https://web-erpdemo-prod.azurewebsites.net/). The application has a simple interface to receive notifications and fetch files.
+We have created a sample webapplication that acts as an external system to demonstrate the integration. The application is located [here](https://dataservice.demo.ibis.nl/). The application has a simple interface to receive notifications and fetch files.
 
 > [!IMPORTANT]  
 > The following steps need an Api Key to make calls to the Ibis Dataservice. Contact Brink Software to get an Api Key. There is one Api Key per integrator, not per customer.
-
 > [!WARNING]  
 > The Api Key is subject to change. In case of misuse or leaked Api Keys Brink Software will change to Api Key so make sure it is configurable. The Api Key is a secret shared between Brink Software and the 3rd party providing the external system. Customers should not have access to this Api Key.
 
 1. To get started, get your subscription API key and paste it in the box "API key".
-2. Simulate a file export from the Ibis calculation software by triggering a notification using the following powershell command that creates a POST request to the Ibis Dataservice. It needs the Api Key to authenticate the request using the `Ocp-Apim-Subscription-Key` header.
+2. Simulate a file export from the Ibis calculation software by triggering a notification using the following PowerShell command that creates a POST request to the Ibis Dataservice. It needs the Api Key to authenticate the request using the `Ocp-Apim-Subscription-Key` header.
 
-```powershell
-$ibisDataserviceServiceUri = 'https://dataservice.ibis.nl/public/notification'
-$DataserviceAppWebhookUri = 'https://web-erpdemo-prod.azurewebsites.net/notifications'
-$headers = @{
-    'Ocp-Apim-Subscription-Key' = '<Api Key goes here>'
-}
+    ```powershell
+    $ibisDataserviceServiceUri = 'https://dataservice.ibis.nl/public/notification'
+    $DataserviceAppWebhookUri = 'https://dataservice.demo.ibis.nl/notifications'
+    $headers = @{
+        'Ocp-Apim-Subscription-Key' = '<Api Key goes here>'
+    }
 
-Invoke-RestMethod -Uri $ibisDataserviceServiceUri  -Body "{`"url`": `"${DataserviceAppWebhookUri}`", `"customProperties`": { `"key`" : `"value`" }}" -ContentType "application/json" -Method Post -Headers $headers
-```
+    Invoke-RestMethod -Uri $ibisDataserviceServiceUri  -Body "{`"url`": `"${DataserviceAppWebhookUri}`", `"customProperties`": { `"key`" : `"value`" }}" -ContentType "application/json" -Method Post -Headers $headers
+    ```
 
 3. The webapplication acts as the external system and will receive the notification and display it in the interface.
 4. Press the "Bestanden Ophalen" button which appears under the notification object.
@@ -119,7 +118,8 @@ $headers = @{
 }
 Invoke-RestMethod -Uri $ibisDataserviceServiceUri  -Body "{`"processedStatus`": `"Succeeded`", `"comments`" : `"some comment`"  }" -ContentType "application/json" -Method Post -Headers $headers
 ```
+
 Currently, the enum values for the `processedStatus` are `Succeeded`, `Failed`. the `comments` field is optional.
 
 > [!WARNING]
-> Do note that this is a `POST` call. This call **will fail** when trying to add multiple statuses to the __same__ `version`
+> Do note that this is a `POST` call. This call **will fail** when trying to add multiple statuses to the **same** `version`
