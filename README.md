@@ -52,7 +52,7 @@ The same file, identified by the `fileId` can be exported multiple times. Versio
 
 ## File types
 
-The actual file that can be fetched depends on the application. Calculeren voor Bouw and Calculeren voor Installatietechniek produc a TradXML file and Ibis voor Infra produces a KpdXxl file.
+The actual file that can be fetched depends on the application. Calculeren voor Bouw and Calculeren voor Installatietechniek produces a TradXML file and Ibis voor Infra produces a KpdXml file.
 
 ### TradXML
 
