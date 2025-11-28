@@ -56,7 +56,13 @@ The actual file that can be fetched depends on the application. Calculeren voor 
 
 ### TradXML
 
-The file linked to in a notification is an XML file containing metadata and a TradXML document. An example file can be found [here](Files/demo.xml?raw=1) and a description of TradXML can be found [here](Files/TradXML1-3.pdf?raw=1).
+The file linked to in a notification is an XML file containing metadata and a TradXML document. 
+
+Files & Documentatiion
+
+- [Example TradXXML file](Files/demo.xml?raw=1)
+- [TradXML documentation](Files/TradXML1-3.pdf?raw=1)
+- [TradXML schema](Files/Tradbegroting17.xsd)
 
 ### KpdXml
 
