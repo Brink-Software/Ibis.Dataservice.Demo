@@ -61,7 +61,7 @@ The file linked to in a notification is an XML file containing metadata and a Tr
 Files & Documentatiion
 
 - [Example TradXXML file](Files/demo.xml?raw=1)
-- [TradXML documentation](Files/TradXML1-3.pdf?raw=1)
+- [TradXML documentation](https://ibiscalculeren.ibis.nl/installatietechniek/help/index.html?beschrijving-van-het-tradxml.html)
 - [TradXML schema](Files/Tradbegroting17.xsd)
 
 ### KpdXml
