@@ -25,7 +25,6 @@
                             }
                         ],
                         "styles": [
-                            "node_modules/bootstrap/dist/css/bootstrap.min.css",
                             "src/styles.css"
                         ],
                         "scripts": []
@@ -44,6 +43,10 @@
                                     "maximumError": "4kB"
                                 }
                             ],
+                            "optimization": true,
+                            "sourceMap": false,
+                            "extractLicenses": true,
+                            "namedChunks": false,
                             "fileReplacements": [
                                 {
                                     "replace": "src/environments/environment.ts",
