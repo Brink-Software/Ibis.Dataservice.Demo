@@ -18,6 +18,20 @@ if (!certificateName) {
 
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
+// Ensure the target directory exists before attempting to export the certificate.
+// On Unix-like systems we create it with restrictive permissions (0700).
+try {
+  if (!fs.existsSync(baseFolder)) {
+    if (process.platform === 'win32') {
+      fs.mkdirSync(baseFolder, { recursive: true });
+    } else {
+      fs.mkdirSync(baseFolder, { recursive: true, mode: 0o700 });
+    }
+  }
+} catch (err) {
+  console.error(`Failed to create directory '${baseFolder}':`, err);
+  process.exit(1);
+}
 
 if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
   spawn('dotnet', [

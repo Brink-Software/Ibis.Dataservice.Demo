@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build testerp app",
-            "program": "${workspaceFolder}/TestErpApp/bin/Debug/net9.0/TestErpApp.dll",
+            "program": "${workspaceFolder}/TestErpApp/bin/Debug/net10.0/TestErpApp.dll",
             "args": [],
             "cwd": "${workspaceFolder}/TestErpApp",
             "externalConsole": true,
